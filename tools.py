@@ -2,8 +2,6 @@
 """
 Created on Thu Apr  5 14:05:58 2018
 
-1、对xml文件进行解析
-
 @author: wansho
 """
 
@@ -40,7 +38,7 @@ def load_xml(path):
     return source
 
 '''
-将弹幕列表写入TXT文件
+将弹幕list按行写入TXT文件
 '''
 def write_danmu(path,danmu_list):
     fw = open(path, 'w', encoding = 'utf-8')

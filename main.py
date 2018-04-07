@@ -8,9 +8,6 @@ import tools
 import os
 import sex_classifier
 
-# tools.parse_danmu()
-
-
 ############ 解析 xml 文件 获取弹幕 ##################
 # 将xml文件中的弹幕解析出来，放到 train 文件夹中，只运行一次就好了
 '''
@@ -34,10 +31,10 @@ for file in files:
     print(path)
     
     prob = sex_classifier.classifier(tools.parse_xml(tools.load_xml(path)) )
-    if prob > 0.01: # 0.01 是训练得到的分界点
+    if (prob >= 0.01 ):
         print("软色情视频")
     else:
-        print("不是软色情")
+        print("非软色情视频")
 
 
 
