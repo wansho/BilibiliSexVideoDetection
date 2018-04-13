@@ -12,8 +12,6 @@ import requests
 import re
 from bs4 import BeautifulSoup
 
-
-
 def downloadHtml(url,headers):
    
     html = -1 # 如果返回 -1，说明爬取失败
@@ -78,10 +76,10 @@ def spider(av):
 
     
     '''
-    xml的header和视频页的header不一样，需要重新构造（小写字母，不需要长连接），否则会被反爬虫拦截
-    ConnectionError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response',))
+    xml的header和视频页的header不一样，需要重新构造（小写字母，不需要保持连接），否则会被反爬虫拦截
+    否则报错： ConnectionError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response',))
     '''
-    xml_header = { 
+    xml_headers = { 
 		'accept' : 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
 		'accept-language':'zh-CN,zh;q=0.9',
 		'cache-control':'max-age=0',
@@ -90,7 +88,7 @@ def spider(av):
 		'user-agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36'    
 	}  
     
-    comment_text = requests.get(comment_url, headers=xml_header).content
+    comment_text = requests.get(comment_url, headers=xml_headers).content
     
     comment_selector = etree.HTML(comment_text)
     comment_content = comment_selector.xpath('//i')
