@@ -10,16 +10,8 @@ Created on Fri Apr 13 10:54:38 2018
 from lxml import etree
 import requests
 import re
-import tools
 from bs4 import BeautifulSoup
 
-
-'''
-sex av:
-    19267367
-    23180818
-
-'''
 
 def downloadHtml(url,headers):
    

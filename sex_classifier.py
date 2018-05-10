@@ -198,6 +198,5 @@ def crawl_train_data():
 if __name__  == '__main__':
     
     pass
-    # sex_avs,not_sex_avs = load_avs()
     # crawl_train_data()
     # train_classifier()
