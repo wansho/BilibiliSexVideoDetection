@@ -10,7 +10,16 @@ Created on Fri Apr 13 10:54:38 2018
 from lxml import etree
 import requests
 import re
+import tools
 from bs4 import BeautifulSoup
+
+
+'''
+sex av:
+    19267367
+    23180818
+
+'''
 
 def downloadHtml(url,headers):
    
@@ -38,7 +47,7 @@ def fix_and_write_html(html_str,path):
     return fixed_html
 
 
-
+# 根据av号爬取弹幕文件，返回弹幕组成的list
 def spider(av):
     
     headers = { 
@@ -52,27 +61,32 @@ def spider(av):
 		'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36'    
 	} 
     
+    # cid 即为弹幕文件的id
     cid = '没有找到该视频'
     
     url = 'https://www.bilibili.com/video/av' + av + '/'
+    print(url)
     html = downloadHtml(url,headers)
-    
     if html == -1:
         print('网页爬取失败')
         return html
     
-    soup = BeautifulSoup(html)
-    cid_soup = soup.find('input',attrs = {'id' : 'link2', 'type' : 'text'})
+    '''
+    save_path = 'html_analyze.html'
+    fix_and_write_html(save_path,html)
+    '''
     
-    if cid_soup == None:
-        return cid   
+    # 用正则表达式匹配cid
+    cid_re = r'\{"cid":\d+'
+    if re.search(cid_re,html):
+        tmp = re.findall(cid_re,html)[0]
+        cid = tmp[tmp.index(':') + 1 : ]
+        # print(cid)
     
-    cid_str = cid_soup.get('value')
     
-    re_cid = 'cid=[0-9]+'
-    cid = re.findall(re_cid,cid_str)[0][4:]
-    
-    comment_url = 'https://comment.bilibili.com/' + cid + '.xml'
+    # 构造弹幕url
+    danmu_url = 'https://comment.bilibili.com/' + cid + '.xml'
+    # print(danmu_url)
 
     
     '''
@@ -88,7 +102,7 @@ def spider(av):
 		'user-agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36'    
 	}  
     
-    comment_text = requests.get(comment_url, headers=xml_headers).content
+    comment_text = requests.get(danmu_url, headers=xml_headers).content
     
     comment_selector = etree.HTML(comment_text)
     comment_content = comment_selector.xpath('//i')

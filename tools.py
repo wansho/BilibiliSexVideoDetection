@@ -7,7 +7,6 @@ Created on Thu Apr  5 14:05:58 2018
 
 from bs4 import BeautifulSoup
 import re
-import os
 
 '''
 用beautifulsoap 修补一下html,xml
@@ -65,28 +64,4 @@ def parse_xml(source):
         danmu_list.append(content)
         
     return danmu_list    
-    
-
-'''
-将xml文件中的弹幕提取到 parsed_danmu 文件夹下 的TXT文件中
-
-config 表示是对sex 文件进行处理还是notsex文件进行处理
-'''
-def parse_danmu(config): 
-    abs_path = os.path.abspath('.')
-    xml_dir = abs_path + '\\xml\\' + config
-    write_dir = abs_path + '\\train\\' + config
-    
-    files = os.listdir(xml_dir)
-    for file in files:
-        path = xml_dir + '\\' + file
-        source = load_xml(path)
-        
-        fixed_source = fix_html(source)
-        
-        danmu_list = parse_xml(fixed_source)
-        
-        write_path = write_dir + '\\train_' + file
-        write_danmu(write_path,danmu_list)
-    
-     
+  
